@@ -19,8 +19,7 @@ class Hangman:
 		self._word_definition = udword.definition
 		if ' ' in self._word:
 			self._guessed_letters_correct.append(' ')
-		
-		
+	
 	@property
 	def word(self):
 		return self._word
@@ -56,8 +55,7 @@ class Hangman:
 		return None not in self.word_as_guessed
 	
 	
-	
-	def game_ongoing(self):
+	def is_game_ongoing(self):
 		return not (self.is_victory() or self.is_defeat())
 	
 	
@@ -80,7 +78,7 @@ class HangmanTextView:
 	def letters_incorrect(self):
 		return ', '.join(self._hangman._guessed_letters_incorrect)
 		
-	@property	
+	@property
 	def word_as_guessed(self):
 		word_as_guessed = self._hangman.word_as_guessed
 		word_as_guessed[:] = [c if c != None else '_' for c in word_as_guessed]
@@ -108,7 +106,7 @@ class HangmanTextController:
 	
 	def run_game_loop(self):
 		l = ''
-		while(h.game_ongoing()):
+		while(h.is_game_ongoing()):
 			print('---\n' + hv.game_state + '\n---')
 			l = input('Guess a letter:')
 			try:
