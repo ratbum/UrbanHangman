@@ -42,13 +42,9 @@ class Hangman:
 		c = c.lower()
 		if c in self._word_lower_case:
 			self._guessed_letters_correct.append(c)
-			if self.is_victory():
-				return self.victory()
 			return True
 		else:
 			self._guessed_letters_incorrect.append(c)
-			if self.is_defeat():
-				return self.defeat()
 			return False
 	
 	def is_victory(self):
@@ -97,8 +93,8 @@ class HangmanTextView:
 	def victory(self):
 		return 'VICTORY!'
 		
-	def is_defeat(self):
-		return self.death_points == Hangman.MAX_DEATH_POINTS
+	def defeat(self):
+		return 'DEFEAT!'
 	
 class HangmanTextController:
 	
