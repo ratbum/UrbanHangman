@@ -54,6 +54,8 @@ class Hangman:
 	def is_victory(self):
 		return None not in self.word_as_guessed
 	
+	def is_defeat(self):
+			return self.death_points == Hangman.MAX_DEATH_POINTS
 	
 	def is_game_ongoing(self):
 		return not (self.is_victory() or self.is_defeat())
