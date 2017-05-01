@@ -52,18 +52,10 @@ class Hangman:
 				return self.defeat()
 			return False
 	
-	
-	def is_defeat(self):
-		return self.death_points == Hangman.MAX_DEATH_POINTS
-	
-	def defeat(self):
-		return 'DOOOOOOOOOOM!'
-	
 	def is_victory(self):
 		return None not in self.word_as_guessed
 	
-	def victory(self):
-		return 'VICTORY!'
+	
 	
 	def game_ongoing(self):
 		return not (self.is_victory() or self.is_defeat())
@@ -101,6 +93,12 @@ class HangmanTextView:
 	@property
 	def game_state(self):
 		return self.letters_incorrect + '\n' + self.gallows + '\n' + self.word_as_guessed
+		
+	def victory(self):
+		return 'VICTORY!'
+		
+	def is_defeat(self):
+		return self.death_points == Hangman.MAX_DEATH_POINTS
 	
 class HangmanTextController:
 	
@@ -122,9 +120,9 @@ class HangmanTextController:
 		print(hv.game_state)
 	
 		if h.is_victory():
-			print(h.victory())
+			print(hv.victory())
 		if h.is_defeat():
-			print(h.defeat())
+			print(hv.defeat())
 	
 		print(h.word)
 		print(h.word_definition)
