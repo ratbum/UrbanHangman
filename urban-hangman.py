@@ -10,7 +10,6 @@ class Hangman:
 		self._word_definitition = ''
 		self._guessed_letters_correct = []
 		self._guessed_letters_incorrect = []
-		self.generate_random_word()
 
 	def generate_random_word(self):
 		udword = ud.random()[0]
@@ -103,6 +102,7 @@ class HangmanTextController:
 		self._view = view
 	
 	def run_game_loop(self):
+		self._hangman.generate_random_word()
 		l = ''
 		while(h.is_game_ongoing()):
 			print('---\n' + hv.game_state + '\n---')
