@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 import urbandictionary as ud
 
 
