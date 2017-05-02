@@ -19,7 +19,7 @@ class Hangman:
 		self._word_lower_case = self._word.lower()
 		self._word_definition = udword.definition
 		if ' ' in self._word:
-			self._guessed_letters_correct.append(' ')
+			self._guessed_letters_correct.append([' ', '-'])
 	
 	@property
 	def word(self):
