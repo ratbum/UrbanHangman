@@ -39,10 +39,11 @@ class Hangman:
 		if not c.isalpha() or len(c) != 1:
 			raise Exception('Expected letter', 'letter_guess accepts only single characters')
 		
+		c = c.lower()
+		
 		if c in self._guessed_letters_correct or c in self._guessed_letters_incorrect:
 			raise Exception('Already guessed', 'letter_guess doesn\'t accept repeats')
 		
-		c = c.lower()
 		if c in self._word_lower_case:
 			self._guessed_letters_correct.append(c)
 			return True
