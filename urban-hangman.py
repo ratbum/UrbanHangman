@@ -12,10 +12,10 @@ class Hangman:
 		self.reset()
 
 	def generate_random_word(self):
-		#udword = ud.random()[0]
-		self._word = 'hello' #udword.word
+		udword = ud.random()[0]
+		self._word = udword.word
 		self._word_lower_case = self._word.lower()
-		self._word_definition = 'hello'#udword.definition
+		self._word_definition = udword.definition
 		if ' ' in self._word:
 			self._guessed_letters_correct.append(' ')
 		if '-' in self._word:
