@@ -1,25 +1,30 @@
 #!/usr/bin/python3
 
 import urbandictionary as ud
+from tkinter import *
+from svg2can import Svg2Can
 
 
 class Hangman:
 	MAX_DEATH_POINTS = 10
 	
 	def __init__(self):
+		self.reset()
+
+	def generate_random_word(self):
+		#udword = ud.random()[0]
+		self._word = 'hello' #udword.word
+		self._word_lower_case = self._word.lower()
+		self._word_definition = 'hello'#udword.definition
+		if ' ' in self._word:
+			self._guessed_letters_correct.append(' ')
+		
+	def reset(self):
 		self._word = ''
 		self._word_lower_case = ''
 		self._word_definitition = ''
 		self._guessed_letters_correct = []
 		self._guessed_letters_incorrect = []
-
-	def generate_random_word(self):
-		udword = ud.random()[0]
-		self._word = udword.word
-		self._word_lower_case = self._word.lower()
-		self._word_definition = udword.definition
-		if ' ' in self._word:
-			self._guessed_letters_correct.append(' ')
 	
 	@property
 	def word(self):
@@ -57,7 +62,6 @@ class Hangman:
 	def is_game_ongoing(self):
 		return not (self.is_victory() or self.is_defeat())
 	
-	
 	@property
 	def word_as_guessed(self):
 		ret_val = []
@@ -73,7 +77,7 @@ class HangmanTextView:
 	def __init__(self, hangman):
 		self._hangman = hangman
 		
-	@property	
+	@property
 	def letters_incorrect(self):
 		return ', '.join(self._hangman._guessed_letters_incorrect)
 		
@@ -125,7 +129,91 @@ class HangmanTextController:
 		print(h.word)
 		print(h.word_definition)
 	
+
+class HangmanTkinterView:
+	def __init__(self, hangman, root):
+		self._hangman = hangman
+		self._root = root
+		self.create_layout()
+		self.draw_all()
 	
+	def draw_hangman_stage(self, stage_index):
+		
+		if (stage_index < 0 or stage_index > Hangman.MAX_DEATH_POINTS):
+			raise IndexError('No such image', 'Must be a number between 0 and Hangman.MAX_DEATH_POINTS')
+		self._hangman_image.delete('all')
+		if (stage_index == 0):
+			# clearing the canvas is sufficient to draw stage 0
+			return
+		svg2can = Svg2Can()
+		svg2can.draw_svg_from_file_on_canvas(self._hangman_image, '/Users/thomaslee/Documents/hangmen/hangman-{0:02d}.svg'.format(stage_index))
+	
+	def draw_all(self):
+		self.draw_hangman_stage(self._hangman.death_points)
+		self._word_string_var.set(self.word_as_guessed)
+		self.mainframe.pack()
+	
+	def create_layout(self):
+		self.mainframe = Frame(self._root)
+		self.start_button = Button(self.mainframe, text='Start')
+		self._word_string_var = StringVar()
+		self._word_label = Label(self.mainframe, textvariable=self._word_string_var)
+		self._hangman_image = Canvas(self.mainframe, width=160, height=248)
+		self.draw_hangman_stage(0)
+		self._hangman_image.pack()
+		self._word_label.pack(expand=1, fill=X)
+		self.start_button.pack()
+		self.mainframe.pack()
+		
+	@property
+	def letters_incorrect(self):
+		return ', '.join(self._hangman._guessed_letters_incorrect)
+		
+	@property
+	def word_as_guessed(self):
+		word_as_guessed = self._hangman.word_as_guessed
+		word_as_guessed[:] = [c if c != None else '_' for c in word_as_guessed]
+		return ' '.join(word_as_guessed)
+		
+	@property
+	def gallows(self):
+		return HangmanTextView.TEXTUAL_HANGING_STATES[self._hangman.death_points]
+		
+	@property
+	def game_state(self):
+		return self.letters_incorrect + '\n' + self.gallows + '\n' + self.word_as_guessed
+		
+	def victory(self):
+		return 'VICTORY!'
+		
+	def defeat(self):
+		return 'DEFEAT!'
+		
+
+class HangmanTkinterController:
+	
+	def __init__(self, hangman, view):
+		print('hello')
+		self._hangman = hangman
+		self._view = view
+		view.start_button.bind("<Button-1>", self.run_game)
+		view.draw_all()
+		view.mainframe.bind("<KeyPress>", self.key_press)
+		view.mainframe.focus_set()
+		view.mainframe.pack()
+		
+	def key_press(self, event):
+		self._hangman.letter_guess(event.char)
+		self._view.draw_all()
+		
+	
+	def run_game(self, event):
+		self._hangman.reset()
+		self._hangman.generate_random_word()
+		self._view.draw_all()
+		
+		
+
 	
 HangmanTextView.TEXTUAL_HANGING_STATES = [
 '''
@@ -210,10 +298,19 @@ HangmanTextView.TEXTUAL_HANGING_STATES = [
 if __name__ == '__main__':
 
 	h = Hangman()
-	hv = HangmanTextView(h)
-	hc = HangmanTextController(h, hv)
+	#hv = HangmanTextView(h)
+	#hc = HangmanTextController(h, hv)
+	print('h')
+	window = Tk()
 	
-	hc.run_game_loop()
+	hv = HangmanTkinterView(h, window)
+	print('he')
+	hc = HangmanTkinterController(h, hv)
+	hv.controller = hc
+	window.mainloop()
+	
+	
+	#hc.run_game_loop()
 	
 	
 
