@@ -1,5 +1,3 @@
-#!/usr/bin/python3
-
 import urbandictionary as ud
 from tkinter import *
 from svg2can import Svg2Can
@@ -10,6 +8,7 @@ class Hangman:
 	
 	def __init__(self):
 		self.reset()
+		self._word = ''
 
 	def generate_random_word(self):
 		udword = ud.random()[0]
@@ -56,14 +55,19 @@ class Hangman:
 			self._guessed_letters_incorrect.append(c)
 			return False
 	
+	@property
 	def is_victory(self):
 		return None not in self.word_as_guessed
 	
+	@property
 	def is_defeat(self):
-			return self.death_points == Hangman.MAX_DEATH_POINTS
+		return self.death_points == Hangman.MAX_DEATH_POINTS
 	
+	@property
 	def is_game_ongoing(self):
-		return not (self.is_victory() or self.is_defeat())
+		is_started = self._word != ''
+		is_ended = (self.is_victory or self.is_defeat)
+		return is_started and not is_ended
 	
 	@property
 	def word_as_guessed(self):

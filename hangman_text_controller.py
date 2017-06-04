@@ -1,5 +1,3 @@
-#!/usr/bin/python3
-
 from hangman import Hangman
 from hangman_text_view import HangmanTextView
 
@@ -13,23 +11,23 @@ class HangmanTextController:
 	def run_game_loop(self):
 		self._hangman.generate_random_word()
 		l = ''
-		while(h.is_game_ongoing()):
-			print('---\n' + hv.game_state + '\n---')
+		while(self._hangman.is_game_ongoing):
+			print('---\n' + self._view.game_state + '\n---')
 			l = input('Guess a letter:')
 			try:
-				h.letter_guess(l)
+				self._hangman.letter_guess(l)
 			except Exception as e:
 				print(e.args[0])
 		
 	
-		print(hv.game_state)
+		print(self._view.game_state)
 	
-		if h.is_victory():
-			print(hv.victory())
-		if h.is_defeat():
-			print(hv.defeat())
+		if self._hangman.is_victory:
+			print(self._view.victory())
+		if self._hangman.is_defeat:
+			print(self._view.defeat())
 	
-		print(h.word)
-		print(h.word_definition)
+		print(self._hangman.word)
+		print(self._hangman.word_definition)
 	
 

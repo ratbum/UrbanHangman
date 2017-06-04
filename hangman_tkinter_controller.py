@@ -1,5 +1,3 @@
-#!/usr/bin/python3
-
 import urbandictionary as ud
 from tkinter import *
 from svg2can import Svg2Can
@@ -17,15 +15,23 @@ class HangmanTkinterController:
 		view.mainframe.bind("<KeyPress>", self.key_press)
 		view.mainframe.focus_set()
 		view.mainframe.pack()
+		self._view.set_message('Click \'Start\' to run the game.')
 		
 	def key_press(self, event):
-		self._hangman.letter_guess(event.char)
-		self._view.draw_all()
+		if(self._hangman.is_game_ongoing):
+			try:
+				self._hangman.letter_guess(event.char)
+			except Exception as e:
+				self._view.set_message(e.args[0])
+			self._view.draw_all()
+		else:
+			self._view.set_message('Click \'Start\' for a new word.')
 		
 	
 	def run_game(self, event):
 		self._hangman.reset()
 		self._hangman.generate_random_word()
 		self._view.draw_all()
+		self._view.set_message('')
 
 

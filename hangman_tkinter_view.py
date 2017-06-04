@@ -1,5 +1,4 @@
-#!/usr/bin/python3
-
+import os
 import urbandictionary as ud
 from tkinter import *
 from svg2can import Svg2Can
@@ -10,8 +9,13 @@ class HangmanTkinterView:
 	def __init__(self, hangman, root):
 		self._hangman = hangman
 		self._root = root
+		self._word_string_var = StringVar()
+		self._message_string_var = StringVar()
 		self.create_layout()
 		self.draw_all()
+		
+	def set_message(self, message):
+		self._message_string_var.set(message)
 	
 	def draw_hangman_stage(self, stage_index):
 		
@@ -21,8 +25,11 @@ class HangmanTkinterView:
 		if (stage_index == 0):
 			# clearing the canvas is sufficient to draw stage 0
 			return
+		
+		location = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
+		
 		svg2can = Svg2Can()
-		svg2can.draw_svg_from_file_on_canvas(self._hangman_image, '/Users/thomaslee/Documents/hangmen/hangman-{0:02d}.svg'.format(stage_index))
+		svg2can.draw_svg_from_file_on_canvas(self._hangman_image, os.path.join(location, './hangmen/hangman-{0:02d}.svg'.format(stage_index)))
 	
 	def draw_all(self):
 		self.draw_hangman_stage(self._hangman.death_points)
@@ -30,16 +37,28 @@ class HangmanTkinterView:
 		self.mainframe.pack()
 	
 	def create_layout(self):
-		self.mainframe = Frame(self._root)
-		self.start_button = Button(self.mainframe, text='Start')
-		self._word_string_var = StringVar()
-		self._word_label = Label(self.mainframe, textvariable=self._word_string_var)
-		self._hangman_image = Canvas(self.mainframe, width=160, height=248)
-		self.draw_hangman_stage(0)
+		self.mainframe = Frame(self._root, width=400, height=248)
+		
+		top_frame = Frame(self.mainframe, bg='red')
+		message_label = Label(top_frame, textvariable=self._message_string_var, anchor=W)
+		message_label.pack(fill=X)
+		top_frame.pack(fill=X, padx=5, pady=5)
+		
+		left_frame = Frame(self.mainframe, width=1060, height=248)
+		right_frame = Frame(self.mainframe, width=160, height=248, highlightbackground="black", highlightcolor="black", highlightthickness=1, bg='white')
+		
+		self.start_button = Button(left_frame, text='Start')
+		word_label = Label(left_frame, textvariable=self._word_string_var)
+		self._hangman_image = Canvas(right_frame, width=160, height=248, bg='white')
+		
 		self._hangman_image.pack()
-		self._word_label.pack(expand=1, fill=X)
-		self.start_button.pack()
-		self.mainframe.pack()
+		word_label.pack(fill=X, side=TOP)
+		self.start_button.pack(side=BOTTOM, fill=X)
+		
+		left_frame.pack(fill=Y, side=LEFT, padx=5, pady=5)
+		right_frame.pack(side=RIGHT)
+		self.mainframe.pack(padx=10, pady=(0, 10))		
+		
 		
 	@property
 	def letters_incorrect(self):
@@ -52,15 +71,6 @@ class HangmanTkinterView:
 		return ' '.join(word_as_guessed)
 		
 	@property
-	def gallows(self):
-		return HangmanTextView.TEXTUAL_HANGING_STATES[self._hangman.death_points]
-		
-	@property
 	def game_state(self):
 		return self.letters_incorrect + '\n' + self.gallows + '\n' + self.word_as_guessed
-		
-	def victory(self):
-		return 'VICTORY!'
-		
-	def defeat(self):
-		return 'DEFEAT!'
+
