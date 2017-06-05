@@ -15,7 +15,7 @@ from hangman_tkinter_controller import HangmanTkinterController
 if __name__ == '__main__':
 
 	h = Hangman()
-	is_gui = len(sys.argv) <= 1 or (len(sys.argv) > 1 and sys.argv[1] != 'cli')
+	is_gui = len(sys.argv) <= 1 or ( len(sys.argv) > 1 and sys.argv[1] != 'cli' )
 	
 	if (is_gui):
 		window = Tk()

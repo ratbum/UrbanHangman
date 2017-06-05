@@ -27,7 +27,8 @@ class HangmanTkinterController:
 				self._view.set_message(e.args[0])
 			self._view.draw_all()
 		else:
-			self.end_game()
+			if self._hangman.is_game_ended:
+				self.end_game()
 
 	def end_game(self):
 		self._view.show_definition()

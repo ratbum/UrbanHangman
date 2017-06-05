@@ -45,16 +45,16 @@ class HangmanTkinterView:
 		self.mainframe.pack()
 	
 	def create_layout(self):
-		self.mainframe = Frame(self._root, width=400, height=248)
+		self.mainframe = Frame(self._root, width=1000, height=248)
 		
 		top_frame = Frame(self.mainframe, bg='red')
 		message_label = Label(top_frame, textvariable=self._message_string_var, anchor=W, justify=LEFT)
 		message_label.pack(fill=X)
 		top_frame.pack(fill=X, padx=5, pady=5)
 		
-		left_frame = Frame(self.mainframe, width=160, height=248)
+		left_frame = Frame(self.mainframe, width=200, height=248)
 		right_frame = Frame(self.mainframe, width=160, height=248, highlightbackground="black", highlightcolor="black", highlightthickness=1, bg='white')
-		bottom_frame = Frame(self.mainframe, width=320, height=40)
+		bottom_frame = Frame(self.mainframe, width=500, height=40)
 		
 		self.start_button = Button(left_frame, text='Start')
 		word_label = Label(left_frame, textvariable=self._word_string_var)

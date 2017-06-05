@@ -8,7 +8,6 @@ class Hangman:
 	
 	def __init__(self):
 		self.reset()
-		self._word = ''
 
 	def generate_random_word(self):
 		udword = ud.random()[0]
@@ -23,7 +22,7 @@ class Hangman:
 	def reset(self):
 		self._word = ''
 		self._word_lower_case = ''
-		self._word_definitition = ''
+		self._word_definition = ''
 		self._guessed_letters_correct = []
 		self._guessed_letters_incorrect = []
 
@@ -66,11 +65,14 @@ class Hangman:
 	@property
 	def is_game_started(self):
 		return self._word != ''
-	
+		
+	@property
+	def is_game_ended(self):
+		return self.is_victory or self.is_defeat
+		
 	@property
 	def is_game_ongoing(self):
-		is_ended = (self.is_victory or self.is_defeat)
-		return self.is_game_started and not is_ended
+		return self.is_game_started and not self.is_game_ended
 	
 	@property
 	def word_as_guessed(self):
