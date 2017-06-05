@@ -64,10 +64,13 @@ class Hangman:
 		return self.death_points == Hangman.MAX_DEATH_POINTS
 	
 	@property
+	def is_game_started(self):
+		return self._word != ''
+	
+	@property
 	def is_game_ongoing(self):
-		is_started = self._word != ''
 		is_ended = (self.is_victory or self.is_defeat)
-		return is_started and not is_ended
+		return self.is_game_started and not is_ended
 	
 	@property
 	def word_as_guessed(self):

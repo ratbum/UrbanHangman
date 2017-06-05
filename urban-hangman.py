@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 
 import os
 import sys
@@ -10,7 +10,6 @@ from hangman_text_view import HangmanTextView
 from hangman_text_controller import HangmanTextController
 from hangman_tkinter_view import HangmanTkinterView
 from hangman_tkinter_controller import HangmanTkinterController
-
 
 
 if __name__ == '__main__':

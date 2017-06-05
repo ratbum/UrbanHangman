@@ -11,11 +11,19 @@ class HangmanTkinterView:
 		self._root = root
 		self._word_string_var = StringVar()
 		self._message_string_var = StringVar()
+		self._definition_string_var = StringVar()
 		self.create_layout()
 		self.draw_all()
 		
 	def set_message(self, message):
 		self._message_string_var.set(message)
+		
+	def show_definition(self):
+		self._definition_string_var.set('{}\n\n{}'.format(self._hangman.word, self._hangman.word_definition))
+	
+	def clear_definition(self):
+		self._definition_string_var.set('')
+	
 	
 	def draw_hangman_stage(self, stage_index):
 		
@@ -40,21 +48,25 @@ class HangmanTkinterView:
 		self.mainframe = Frame(self._root, width=400, height=248)
 		
 		top_frame = Frame(self.mainframe, bg='red')
-		message_label = Label(top_frame, textvariable=self._message_string_var, anchor=W)
+		message_label = Label(top_frame, textvariable=self._message_string_var, anchor=W, justify=LEFT)
 		message_label.pack(fill=X)
 		top_frame.pack(fill=X, padx=5, pady=5)
 		
-		left_frame = Frame(self.mainframe, width=1060, height=248)
+		left_frame = Frame(self.mainframe, width=160, height=248)
 		right_frame = Frame(self.mainframe, width=160, height=248, highlightbackground="black", highlightcolor="black", highlightthickness=1, bg='white')
+		bottom_frame = Frame(self.mainframe, width=320, height=40)
 		
 		self.start_button = Button(left_frame, text='Start')
 		word_label = Label(left_frame, textvariable=self._word_string_var)
 		self._hangman_image = Canvas(right_frame, width=160, height=248, bg='white')
+		message_label = Label(bottom_frame, textvariable=self._definition_string_var, anchor=W, justify=LEFT, wraplength=400)
 		
 		self._hangman_image.pack()
+		message_label.pack(side=LEFT, fill=X)
 		word_label.pack(fill=X, side=TOP)
 		self.start_button.pack(side=BOTTOM, fill=X)
 		
+		bottom_frame.pack(side=BOTTOM, fill=X)
 		left_frame.pack(fill=Y, side=LEFT, padx=5, pady=5)
 		right_frame.pack(side=RIGHT)
 		self.mainframe.pack(padx=10, pady=(0, 10))		

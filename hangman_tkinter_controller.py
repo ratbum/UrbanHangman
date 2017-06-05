@@ -21,17 +21,26 @@ class HangmanTkinterController:
 		if(self._hangman.is_game_ongoing):
 			try:
 				self._hangman.letter_guess(event.char)
+				if not self._hangman.is_game_ongoing:
+					self.end_game()
 			except Exception as e:
 				self._view.set_message(e.args[0])
 			self._view.draw_all()
 		else:
-			self._view.set_message('Click \'Start\' for a new word.')
+			self.end_game()
+
+	def end_game(self):
+		self._view.show_definition()
 		
-	
+		performance_comment = 'Well done.' if self._hangman.is_victory else 'Sorry.'
+		
+		self._view.set_message(performance_comment + '\nClick \'Start\' for a new word.')
+		
 	def run_game(self, event):
 		self._hangman.reset()
 		self._hangman.generate_random_word()
 		self._view.draw_all()
 		self._view.set_message('')
+		self._view.clear_definition()
 
 
