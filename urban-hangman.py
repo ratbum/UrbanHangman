@@ -22,7 +22,7 @@ if __name__ == '__main__':
 	
 		hv = HangmanTkinterView(h, window)
 		hc = HangmanTkinterController(h, hv)
-		hv.controller = hc
+
 		window.mainloop()
 	else:
 		hv = HangmanTextView(h)
